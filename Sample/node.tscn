@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2pvlfcyctg2w"]
+
+[ext_resource type="Script" uid="uid://7684ssibke4m" path="res://Sample/main.gd" id="1_112p8"]
+[ext_resource type="Script" uid="uid://cucw5fo77fbm4" path="res://Scripts/HotkeyManager.cs" id="2_j2q8x"]
+[ext_resource type="Script" uid="uid://ela3mr2uaxd3" path="res://Scripts/GlobalHotkeyListener.cs" id="3_112p8"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_112p8")
+
+[node name="HotkeyManager" type="Node" parent="."]
+script = ExtResource("2_j2q8x")
+
+[node name="GlobalHotkeyListener" type="Node" parent="."]
+script = ExtResource("3_112p8")

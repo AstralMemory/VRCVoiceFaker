@@ -1,0 +1,104 @@
+[gd_scene load_steps=6 format=3 uid="uid://8i5i3t3pctcr"]
+
+[ext_resource type="Script" uid="uid://bhx80iln1ig2x" path="res://panel.gd" id="1_0fbet"]
+[ext_resource type="Script" uid="uid://dn5ve5tbskynv" path="res://addons/godOSC/scripts/OSCClient.gd" id="2_62e2m"]
+[ext_resource type="Script" uid="uid://cujh0mkfs1mom" path="res://Scripts/MousePassThrough.cs" id="3_kbped"]
+[ext_resource type="Script" uid="uid://ela3mr2uaxd3" path="res://Scripts/GlobalHotkeyListener.cs" id="4_fj5cn"]
+[ext_resource type="Script" uid="uid://cucw5fo77fbm4" path="res://Scripts/HotkeyManager.cs" id="5_iy58a"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -154.5
+offset_top = -108.5
+offset_right = 154.5
+offset_bottom = 108.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0fbet")
+
+[node name="Title" type="Label" parent="Main"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -68.5
+offset_top = 14.5
+offset_right = 68.5
+offset_bottom = 37.5
+grow_horizontal = 2
+text = "VRC Chat to Voice"
+
+[node name="Chat" type="TextEdit" parent="Main"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -127.5
+offset_top = -61.0
+offset_right = 127.5
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "送信するテキスト"
+
+[node name="Send" type="Button" parent="Main"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -42.0
+offset_right = 20.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "送信"
+
+[node name="Voice" type="AudioStreamPlayer" parent="Main"]
+
+[node name="OSC_Toggle" type="CheckButton" parent="Main"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -42.0
+offset_right = 106.0
+offset_bottom = -11.0
+grow_vertical = 0
+text = "OSC"
+
+[node name="OSCClient" type="Node" parent="Main"]
+script = ExtResource("2_62e2m")
+port = 9000
+metadata/_custom_type_script = "uid://dn5ve5tbskynv"
+
+[node name="GlobalHotkeyListener" type="Node" parent="Main"]
+script = ExtResource("4_fj5cn")
+
+[node name="HotkeyManager" type="Node" parent="Main"]
+script = ExtResource("5_iy58a")
+
+[node name="MousePassThrough" type="Node" parent="."]
+script = ExtResource("3_kbped")
+
+[connection signal="text_changed" from="Main/Chat" to="Main" method="_on_chat_text_changed"]
+[connection signal="pressed" from="Main/Send" to="Main" method="_on_send_pressed"]
+[connection signal="toggled" from="Main/OSC_Toggle" to="Main" method="_on_osc_toggle_toggled"]
