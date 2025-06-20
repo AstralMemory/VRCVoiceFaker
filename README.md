@@ -6,3 +6,6 @@ GodotEngine4.4.1 .NET版
 
 ライセンスはMITライセンスなので
 どんどん改変してください！
+
+またここには含まれていませんが
+GodOSCを使っていてto_ascii_bufferをto_utf8_bufferに変更しています。
