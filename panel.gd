@@ -53,7 +53,7 @@ func _on_send_pressed() -> void:
 		ErrorDialog.dialog_text = "文字数が100を超えてます。"
 		ErrorDialog.popup_centered()
 
-func _on_request_completed(result, responce_code, headers, body):
+func _on_request_completed(_result, responce_code, _headers, body):
 	get_node("/root/Control/Main/VoiceRequest").queue_free()
 	if responce_code == 200:
 		var audio = AudioStreamWAV.load_from_buffer(body)
