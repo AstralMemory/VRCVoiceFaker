@@ -15,8 +15,4 @@ export_credentials.cfg
 data_*/
 mono_crash.*.json
 
-<<<<<<< HEAD
-addons
-=======
-addons
->>>>>>> 86a017bdf821d696c9cb55f2dbb3ca90b0b6ab58
+addons/
