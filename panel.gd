@@ -90,6 +90,10 @@ func _on_hotkey_triggered(hotkey_id: String):
 	match hotkey_id:
 		"TogglePanel":
 			self.visible = !self.visible
+			if self.visible:
+				ChatText.grab_focus()
+			else:
+				ChatText.release_focus()
 		"QuitApp":
 			get_tree().quit()
 
