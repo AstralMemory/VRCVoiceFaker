@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://8i5i3t3pctcr"]
+[gd_scene load_steps=8 format=3 uid="uid://8i5i3t3pctcr"]
 
 [ext_resource type="Script" uid="uid://bhx80iln1ig2x" path="res://panel.gd" id="1_0fbet"]
-[ext_resource type="Script" uid="uid://bc8ao2v5ee67e" path="res://addons/godOSC/scripts/OSCClient.gd" id="2_fos0i"]
+[ext_resource type="Script" uid="uid://bhuwd7ocviylt" path="res://addons/godOSC/scripts/OSCClient.gd" id="2_fos0i"]
 [ext_resource type="Script" uid="uid://cujh0mkfs1mom" path="res://Scripts/MousePassThrough.cs" id="3_kbped"]
 [ext_resource type="Script" uid="uid://ela3mr2uaxd3" path="res://Scripts/GlobalHotkeyListener.cs" id="4_fj5cn"]
 [ext_resource type="Script" uid="uid://cucw5fo77fbm4" path="res://Scripts/HotkeyManager.cs" id="5_iy58a"]
+[ext_resource type="Script" uid="uid://c1d7pedh5o36k" path="res://config_panel.gd" id="6_3dxm6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgr22"]
+bg_color = Color(0.135617, 0.135617, 0.135617, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -39,7 +43,7 @@ offset_top = 14.5
 offset_right = 68.5
 offset_bottom = 37.5
 grow_horizontal = 2
-text = "VRC Chat to Voice"
+text = "VRC Voice Faker"
 
 [node name="Chat" type="TextEdit" parent="Main"]
 layout_mode = 1
@@ -69,6 +73,7 @@ offset_right = 20.0
 offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 0
+disabled = true
 text = "送信"
 
 [node name="Voice" type="AudioStreamPlayer" parent="Main"]
@@ -87,8 +92,9 @@ text = "OSC"
 
 [node name="OSCClient" type="Node" parent="Main"]
 script = ExtResource("2_fos0i")
+ip_address = "192.168.9.132"
 port = 9000
-metadata/_custom_type_script = "uid://bc8ao2v5ee67e"
+metadata/_custom_type_script = "uid://bhuwd7ocviylt"
 
 [node name="GlobalHotkeyListener" type="Node" parent="Main"]
 script = ExtResource("4_fj5cn")
@@ -96,9 +102,163 @@ script = ExtResource("4_fj5cn")
 [node name="HotkeyManager" type="Node" parent="Main"]
 script = ExtResource("5_iy58a")
 
+[node name="Config" type="Button" parent="Main"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -59.0
+offset_top = -42.0
+offset_right = -19.0
+offset_bottom = -11.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "設定"
+
 [node name="MousePassThrough" type="Node" parent="."]
 script = ExtResource("3_kbped")
+
+[node name="ConfigPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.0
+offset_top = -107.5
+offset_right = 155.0
+offset_bottom = 107.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lgr22")
+script = ExtResource("6_3dxm6")
+
+[node name="Title" type="Label" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 15.0
+offset_right = 20.0
+offset_bottom = 38.0
+grow_horizontal = 2
+text = "設定"
+
+[node name="IPAddress" type="Label" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 60.0
+offset_top = -57.5
+offset_right = 132.0
+offset_bottom = -34.5
+grow_vertical = 2
+text = "接続先IP :"
+
+[node name="IPAddress_Edit" type="LineEdit" parent="ConfigPanel/IPAddress"]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 230.0
+offset_bottom = 31.0
+text = "127.0.0.1"
+placeholder_text = "接続先"
+
+[node name="PORT" type="Label" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 60.0
+offset_top = -27.5
+offset_right = 159.0
+offset_bottom = -4.5
+grow_vertical = 2
+text = "接続先PORT :"
+
+[node name="PORT_Edit" type="LineEdit" parent="ConfigPanel/PORT"]
+layout_mode = 0
+offset_left = 110.0
+offset_right = 178.563
+offset_bottom = 31.0
+text = "5000"
+placeholder_text = "ポート"
+
+[node name="Close" type="Button" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -40.0
+offset_right = -11.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "閉じる"
+
+[node name="Save" type="Button" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -40.0
+offset_right = -70.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+disabled = true
+text = "保存"
+
+[node name="AudioLevel" type="Label" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = 7.5
+offset_right = -35.0
+offset_bottom = 30.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "音量:"
+
+[node name="Volume" type="HSlider" parent="ConfigPanel/AudioLevel"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 5.0
+offset_right = 150.0
+offset_bottom = 21.0
+min_value = -80.0
+max_value = 24.0
+tick_count = 1
+ticks_on_borders = true
+
+[node name="VolumePercent" type="Label" parent="ConfigPanel/AudioLevel"]
+layout_mode = 0
+offset_left = 160.0
+offset_right = 202.0
+offset_bottom = 23.0
+text = "%"
 
 [connection signal="text_changed" from="Main/Chat" to="Main" method="_on_chat_text_changed"]
 [connection signal="pressed" from="Main/Send" to="Main" method="_on_send_pressed"]
 [connection signal="toggled" from="Main/OSC_Toggle" to="Main" method="_on_osc_toggle_toggled"]
+[connection signal="pressed" from="Main/Config" to="Main" method="_on_config_pressed"]
+[connection signal="text_changed" from="ConfigPanel/IPAddress/IPAddress_Edit" to="ConfigPanel" method="_on_ip_address_edit_text_changed"]
+[connection signal="text_changed" from="ConfigPanel/PORT/PORT_Edit" to="ConfigPanel" method="_on_port_edit_text_changed"]
+[connection signal="pressed" from="ConfigPanel/Close" to="ConfigPanel" method="_on_close_pressed"]
+[connection signal="pressed" from="ConfigPanel/Save" to="ConfigPanel" method="_on_save_pressed"]
+[connection signal="value_changed" from="ConfigPanel/AudioLevel/Volume" to="ConfigPanel" method="_on_volume_value_changed"]

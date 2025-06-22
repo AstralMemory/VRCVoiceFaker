@@ -9,6 +9,7 @@ var hotkey_manager = null
 @onready var ChatText = $Chat
 @onready var Voice: AudioStreamPlayer = $Voice
 @onready var god_osc = $OSCClient
+@onready var config = get_node("/root/Control/ConfigPanel")
 
 func _ready():
 	hotkey_manager = $HotkeyManager
@@ -37,6 +38,8 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 
 func _on_send_pressed() -> void:
+	var IPAddress = config.IPAddress
+	var PORT = config.PORT
 	$Send.disabled = true
 	ChatText.editable = false
 	if len(ChatText.text) <= 100 or ChatText.text != "":
@@ -44,7 +47,7 @@ func _on_send_pressed() -> void:
 		http_request.name = "VoiceRequest"
 		http_request.connect("request_completed", Callable(self, "_on_request_completed"))
 		add_child(http_request)
-		var url = "http://127.0.0.1:5000/voice?text=" + ChatText.text.uri_encode()
+		var url = "http://" + IPAddress + ":" + PORT + "/voice?text=" + ChatText.text.uri_encode()
 		var header = ["accept: audio/wav"]
 		http_request.request(url, header, HTTPClient.METHOD_GET, "")
 	else:
@@ -58,6 +61,7 @@ func _on_request_completed(_result, responce_code, _headers, body):
 	if responce_code == 200:
 		var audio = AudioStreamWAV.load_from_buffer(body)
 		Voice.stream = audio
+		Voice.volume_db = config.AudioVolume
 		Voice.play()
 		if osc:
 			var address = "/chatbox/typing"
@@ -79,24 +83,32 @@ func _on_osc_toggle_toggled(toggled_on: bool) -> void:
 		osc = false
 
 func _on_chat_text_changed() -> void:
-	if osc:
-		var address = "/chatbox/typing"
-		var args = [true]
-		god_osc.send_message(address, args)
-	if Input.is_action_pressed("SendText"):
-		_on_send_pressed()
+	if ChatText.text != "":
+		$Send.disabled = false
+		if osc:
+			var address = "/chatbox/typing"
+			var args = [true]
+			god_osc.send_message(address, args)
+		if Input.is_action_pressed("SendText"):
+			_on_send_pressed()
+	else:
+		$Send.disabled = true
+		if osc:
+			var address = "/chatbox/typing"
+			var args = [false]
+			god_osc.send_message(address, args)
 
 func _on_hotkey_triggered(hotkey_id: String):
 	match hotkey_id:
 		"TogglePanel":
 			self.visible = !self.visible
-			if self.visible:
-				ChatText.grab_focus()
-			else:
-				ChatText.release_focus()
 		"QuitApp":
 			get_tree().quit()
 
 func _exit_tree():
 	if hotkey_manager != null and hotkey_manager.is_connected("HotkeyTriggered", Callable(self, "_on_hotkey_triggered")):
 		hotkey_manager.disconnect("HotkeyTriggered", Callable(self, "_hotkey_triggered"))
+
+
+func _on_config_pressed() -> void:
+	config.visible = true
