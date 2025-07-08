@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://8i5i3t3pctcr"]
 
 [ext_resource type="Script" uid="uid://bhx80iln1ig2x" path="res://panel.gd" id="1_0fbet"]
-[ext_resource type="Script" uid="uid://bhuwd7ocviylt" path="res://addons/godOSC/scripts/OSCClient.gd" id="2_fos0i"]
+[ext_resource type="Script" uid="uid://bc8ao2v5ee67e" path="res://addons/godOSC/scripts/OSCClient.gd" id="2_fos0i"]
 [ext_resource type="Script" uid="uid://cujh0mkfs1mom" path="res://Scripts/MousePassThrough.cs" id="3_kbped"]
 [ext_resource type="Script" uid="uid://ela3mr2uaxd3" path="res://Scripts/GlobalHotkeyListener.cs" id="4_fj5cn"]
 [ext_resource type="Script" uid="uid://cucw5fo77fbm4" path="res://Scripts/HotkeyManager.cs" id="5_iy58a"]
@@ -94,7 +94,6 @@ text = "OSC"
 script = ExtResource("2_fos0i")
 ip_address = "192.168.9.132"
 port = 9000
-metadata/_custom_type_script = "uid://bhuwd7ocviylt"
 
 [node name="GlobalHotkeyListener" type="Node" parent="Main"]
 script = ExtResource("4_fj5cn")
