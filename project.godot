@@ -19,6 +19,10 @@ boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="uid://c7p2ikp4tcum"
 
+[audio]
+
+general/text_to_speech=true
+
 [display]
 
 window/size/mode=3

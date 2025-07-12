@@ -252,6 +252,16 @@ offset_right = 202.0
 offset_bottom = 23.0
 text = "%"
 
+[node name="LegacyMode" type="CheckButton" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 115.0
+grow_vertical = 0
+text = "軽量モード"
+
 [connection signal="text_changed" from="Main/Chat" to="Main" method="_on_chat_text_changed"]
 [connection signal="pressed" from="Main/Send" to="Main" method="_on_send_pressed"]
 [connection signal="toggled" from="Main/OSC_Toggle" to="Main" method="_on_osc_toggle_toggled"]
@@ -261,3 +271,4 @@ text = "%"
 [connection signal="pressed" from="ConfigPanel/Close" to="ConfigPanel" method="_on_close_pressed"]
 [connection signal="pressed" from="ConfigPanel/Save" to="ConfigPanel" method="_on_save_pressed"]
 [connection signal="value_changed" from="ConfigPanel/AudioLevel/Volume" to="ConfigPanel" method="_on_volume_value_changed"]
+[connection signal="toggled" from="ConfigPanel/LegacyMode" to="Main" method="_on_legacy_mode_toggled"]

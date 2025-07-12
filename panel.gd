@@ -4,6 +4,7 @@ var dragging = false
 var drag_offset = Vector2.ZERO
 
 var osc: bool = false
+var legacy: bool = false
 var hotkey_manager = null
 
 @onready var ChatText = $Chat
@@ -43,13 +44,22 @@ func _on_send_pressed() -> void:
 	$Send.disabled = true
 	ChatText.editable = false
 	if len(ChatText.text) <= 100 or ChatText.text != "":
-		var http_request = HTTPRequest.new()
-		http_request.name = "VoiceRequest"
-		http_request.connect("request_completed", Callable(self, "_on_request_completed"))
-		add_child(http_request)
-		var url = "http://" + IPAddress + ":" + PORT + "/voice?text=" + ChatText.text.uri_encode()
-		var header = ["accept: audio/wav"]
-		http_request.request(url, header, HTTPClient.METHOD_GET, "")
+		if legacy:
+			DisplayServer.tts_stop()
+			var voices = DisplayServer.tts_get_voices_for_language("ja")
+			var voice_id = voices[0]
+			DisplayServer.tts_speak(ChatText.text, voice_id)
+			ChatText.text = ""
+			$Send.disabled = false
+			ChatText.editable = true
+		else:
+			var http_request = HTTPRequest.new()
+			http_request.name = "VoiceRequest"
+			http_request.connect("request_completed", Callable(self, "_on_request_completed"))
+			add_child(http_request)
+			var url = "http://" + IPAddress + ":" + PORT + "/voice?text=" + ChatText.text.uri_encode()
+			var header = ["accept: audio/wav"]
+			http_request.request(url, header, HTTPClient.METHOD_GET, "")
 	else:
 		var ErrorDialog = AcceptDialog.new()
 		ErrorDialog.title = "エラー"
@@ -75,12 +85,23 @@ func _on_request_completed(_result, responce_code, _headers, body):
 		ChatText.editable = true
 		await Voice.finished
 		Voice.stream = null
+	else:
+		var ErrorDialog = AcceptDialog.new()
+		ErrorDialog.title = "エラー"
+		ErrorDialog.dialog_text = "APIサーバーにつながりませんでした。"
+		ErrorDialog.popup_centered()
 
 func _on_osc_toggle_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		osc = true
 	else:
 		osc = false
+
+func _on_legacy_mode_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		legacy = true
+	else:
+		legacy = false
 
 func _on_chat_text_changed() -> void:
 	if ChatText.text != "":
